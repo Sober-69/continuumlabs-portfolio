@@ -23,8 +23,20 @@ export default function ProjectList({ projects, onEdit, onDelete }) {
         <div key={project.id} className="bg-white/5 rounded-lg p-4">
           <div className="flex justify-between items-start">
             <div className="flex-1">
-              <h3 className="font-semibold text-white">{project.title}</h3>
-              <p className="text-sm text-gray-400 line-clamp-2">{project.description}</p>
+              <div className="flex items-center gap-3">
+                {/* Icon */}
+                {project.icon && (
+                  <div className="text-2xl">
+                    {project.icon.startsWith('http') ? (
+                      <img src={project.icon} alt={project.title} className="w-8 h-8 rounded object-cover" />
+                    ) : (
+                      <span>{project.icon}</span>
+                    )}
+                  </div>
+                )}
+                <h3 className="font-semibold text-white">{project.title}</h3>
+              </div>
+              <p className="text-sm text-gray-400 line-clamp-2 mt-1">{project.description}</p>
               <div className="flex flex-wrap gap-1.5 mt-2">
                 {project.tech?.map((t) => (
                   <span key={t} className="text-xs px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
@@ -32,6 +44,10 @@ export default function ProjectList({ projects, onEdit, onDelete }) {
                   </span>
                 ))}
               </div>
+              {/* Download link indicator */}
+              {project.downloadLink && (
+                <div className="mt-1 text-xs text-green-400">✓ Download available</div>
+              )}
             </div>
             <div className="flex gap-2 ml-4">
               <button
