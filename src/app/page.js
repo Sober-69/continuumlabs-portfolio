@@ -1,3 +1,5 @@
+import { getProjects } from '@/lib/projects';
+
 "use client";
 
 import { useState, useEffect } from "react";
