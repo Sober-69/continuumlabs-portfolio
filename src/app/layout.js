@@ -1,5 +1,6 @@
 import "./globals.css";
 import ThemeToggle from "@/components/ThemeToggle";
+import Navbar from "@/components/Navbar";
 
 export const metadata = {
   title: "Continuumlabs — AI Application Developer",
@@ -11,16 +12,12 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{
-          __html: `
-            try {
-              const t = localStorage.getItem("theme") || "dark";
-              document.documentElement.classList.add(t);
-            } catch(e) {}
-          `
+          __html: `try{const t=localStorage.getItem("theme")||"dark";document.documentElement.classList.add(t)}catch(e){}`
         }} />
       </head>
       <body className="bg-white dark:bg-[#0a0a0f] text-gray-900 dark:text-gray-100">
         <ThemeToggle />
+        <Navbar />
         {children}
       </body>
     </html>
