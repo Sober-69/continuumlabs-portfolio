@@ -4,25 +4,64 @@ import { getProjects } from '@/lib/projects';
 
 import { useState, useEffect } from "react";
 
-const projects = [
-  {
-    id: 1,
-    title: "Salah Reminder",
-    description: "A prayer time reminder app with accurate location-based prayer timings and customizable alerts for all 5 daily prayers.",
-    tech: ["React Native", "Expo", "Adhan API"],
-    link: "#",
-    gradient: "from-cyan-400 to-blue-600",
-  },
-  {
-    id: 2,
-    title: "Qi Block Blast",
-    description: "An addictive block blast puzzle game with vibrant visuals, power-ups, and increasing difficulty levels.",
-    tech: ["Unity", "C#", "Mobile"],
-    link: "#",
-    gradient: "from-purple-500 to-pink-500",
-  },
-];
+function Projects() {
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch('/api/projects');
+        const data = await res.json();
+        setProjects(data);
+      } catch (error) {
+        console.error('Failed to fetch projects:', error);
+        const localProjects = getProjects();
+        setProjects(localProjects);
+      }
+      setLoading(false);
+    };
+    fetchProjects();
+  }, []);
+
+  if (loading) {
+    return (
+      <section id="projects" className="py-24 px-4">
+        <div className="max-w-6xl mx-auto text-center text-gray-400">Loading projects...</div>
+      </section>
+    );
+  }
+
+  return (
+    <section id="projects" className="py-24 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold gradient-text mb-4">My Projects</h2>
+          <p className="text-gray-500 dark:text-gray-400 max-w-lg mx-auto">Each project is built with passion and precision.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((p) => (
+            <div key={p.id} className="group relative glass rounded-xl p-6 glow-border transition-all duration-500 hover:-translate-y-2">
+              <div className={`h-1.5 w-16 rounded-full bg-gradient-to-r ${p.gradient} mb-5`} />
+              <h3 className="text-xl font-bold mb-3 dark:text-white text-gray-900 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-purple-500 transition-all">
+                {p.title}
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-5 leading-relaxed">{p.description}</p>
+              <div className="flex flex-wrap gap-2 mb-6">
+                {p.tech?.map((t) => (
+                  <span key={t} className="px-2.5 py-1 text-xs rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">{t}</span>
+                ))}
+              </div>
+              {p.link && p.link !== "#" && (
+                <a href={p.link} target="_blank" rel="noopener noreferrer" className="text-sm text-cyan-400 hover:text-cyan-300 transition-colors">↗ Live App</a>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 function Header({ dark, toggleDark, menuOpen, setMenuOpen }) {
   const links = [
     { label: "Home", href: "#home" },
