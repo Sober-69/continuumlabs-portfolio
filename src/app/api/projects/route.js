@@ -1,28 +1,35 @@
 import { NextResponse } from 'next/server';
 import { getProjects, saveProjects } from '@/lib/projects';
 
-// GET all projects
 export async function GET() {
-  const projects = getProjects();
-  return NextResponse.json(projects);
+  try {
+    const projects = getProjects();
+    return NextResponse.json(projects);
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to fetch projects' }, { status: 500 });
+  }
 }
 
-// POST new project
 export async function POST(request) {
   try {
     const newProject = await request.json();
     const projects = getProjects();
     const maxId = projects.reduce((max, p) => Math.max(max, p.id), 0);
-    newProject.id = maxId + 1;
-    projects.push(newProject);
+    const projectWithId = {
+      ...newProject,
+      id: maxId + 1,
+      gradient: newProject.gradient || 'from-cyan-400 to-purple-500',
+      tech: newProject.tech || [],
+      link: newProject.link || '#'
+    };
+    projects.push(projectWithId);
     saveProjects(projects);
-    return NextResponse.json(newProject, { status: 201 });
+    return NextResponse.json(projectWithId, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to add project' }, { status: 500 });
   }
 }
 
-// PUT update project
 export async function PUT(request) {
   try {
     const updatedProject = await request.json();
@@ -39,7 +46,6 @@ export async function PUT(request) {
   }
 }
 
-// DELETE project
 export async function DELETE(request) {
   try {
     const { id } = await request.json();
