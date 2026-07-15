@@ -1,13 +1,11 @@
-// Simple auth with hardcoded credentials (upgrade later)
 const ADMIN_CREDENTIALS = {
   username: 'admin',
-  password: 'Potato@88' // Change this!
+  password: 'Potato@88' // CHANGE THIS!
 };
 
 export const login = (username, password) => {
   if (username === ADMIN_CREDENTIALS.username && 
       password === ADMIN_CREDENTIALS.password) {
-    // Store auth state
     if (typeof window !== 'undefined') {
       localStorage.setItem('isAdmin', 'true');
       localStorage.setItem('adminSession', Date.now().toString());
@@ -28,7 +26,6 @@ export const isAuthenticated = () => {
   if (typeof window === 'undefined') return false;
   const isAdmin = localStorage.getItem('isAdmin') === 'true';
   const session = localStorage.getItem('adminSession');
-  // Session expires after 24 hours
   if (session && Date.now() - parseInt(session) > 86400000) {
     logout();
     return false;
