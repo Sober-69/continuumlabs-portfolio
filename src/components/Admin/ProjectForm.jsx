@@ -8,7 +8,9 @@ export default function ProjectForm({ project, onSuccess, onCancel }) {
     description: '',
     tech: '',
     link: '#',
-    gradient: 'from-cyan-400 to-purple-500'
+    gradient: 'from-cyan-400 to-purple-500',
+    icon: '🚀', // New field
+    downloadLink: '' // New field
   });
 
   useEffect(() => {
@@ -18,7 +20,9 @@ export default function ProjectForm({ project, onSuccess, onCancel }) {
         description: project.description,
         tech: project.tech?.join(', ') || '',
         link: project.link || '#',
-        gradient: project.gradient || 'from-cyan-400 to-purple-500'
+        gradient: project.gradient || 'from-cyan-400 to-purple-500',
+        icon: project.icon || '🚀',
+        downloadLink: project.downloadLink || ''
       });
     }
   }, [project]);
@@ -42,7 +46,15 @@ export default function ProjectForm({ project, onSuccess, onCancel }) {
 
     if (res.ok) {
       onSuccess();
-      setFormData({ title: '', description: '', tech: '', link: '#', gradient: 'from-cyan-400 to-purple-500' });
+      setFormData({ 
+        title: '', 
+        description: '', 
+        tech: '', 
+        link: '#', 
+        gradient: 'from-cyan-400 to-purple-500',
+        icon: '🚀',
+        downloadLink: ''
+      });
     }
   };
 
@@ -71,6 +83,25 @@ export default function ProjectForm({ project, onSuccess, onCancel }) {
         onChange={(e) => setFormData({ ...formData, tech: e.target.value })}
         className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-cyan-400 focus:outline-none text-white"
       />
+      
+      {/* New: Icon field */}
+      <input
+        type="text"
+        placeholder="Icon (emoji or URL) - e.g., 🚀 or /icons/app.png"
+        value={formData.icon}
+        onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
+        className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-cyan-400 focus:outline-none text-white"
+      />
+      
+      {/* New: Download link field */}
+      <input
+        type="text"
+        placeholder="Download Link (e.g., https://example.com/download/app)"
+        value={formData.downloadLink}
+        onChange={(e) => setFormData({ ...formData, downloadLink: e.target.value })}
+        className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-cyan-400 focus:outline-none text-white"
+      />
+      
       <input
         type="text"
         placeholder="Live Demo URL"
@@ -85,6 +116,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }) {
         onChange={(e) => setFormData({ ...formData, gradient: e.target.value })}
         className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-cyan-400 focus:outline-none text-white"
       />
+      
       <div className="flex gap-3">
         <button
           type="submit"
