@@ -112,7 +112,7 @@ function Projects() {
 // ─── Main Page ───
 export default function Home() {
   return (
-    <main>
+    <main className="pt-16">
       <Hero />
       <Projects />
       <section id="contact" className="py-24 px-4">
