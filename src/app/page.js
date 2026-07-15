@@ -4,6 +4,33 @@ import { useState, useEffect } from "react";
 import { getProjects } from "@/data/projects";
 import ContactForm from "@/components/ContactForm";
 
+// ─── Hero Section ───
+function Hero() {
+  return (
+    <section className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
+      <div className="text-center max-w-4xl mx-auto">
+        <h1 className="text-5xl md:text-7xl font-bold mb-6">
+          <span className="gradient-text">Turning Ideas</span>
+          <br />
+          <span className="dark:text-white text-gray-900">Into Reality</span>
+        </h1>
+        <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-8">
+          I build intelligent apps, games, and tools that make a difference.
+        </p>
+        <div className="flex gap-4 justify-center">
+          <a href="#projects" className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white px-8 py-3 rounded-full hover:shadow-lg hover:shadow-purple-500/25 transition-all">
+            View Projects
+          </a>
+          <a href="#contact" className="border border-gray-300 dark:border-gray-700 px-8 py-3 rounded-full hover:border-cyan-500 transition-all dark:text-white text-gray-900">
+            Get In Touch
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Projects Section ───
 function Projects() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,9 +39,7 @@ function Projects() {
     const fetchProjects = async () => {
       try {
         const res = await fetch('/api/projects');
-        if (!res.ok) {
-          throw new Error('Failed to fetch');
-        }
+        if (!res.ok) throw new Error('Failed to fetch');
         const data = await res.json();
         setProjects(data);
       } catch (error) {
@@ -24,7 +49,6 @@ function Projects() {
       }
       setLoading(false);
     };
-    
     fetchProjects();
   }, []);
 
@@ -69,16 +93,12 @@ function Projects() {
               </div>
               <div className="flex flex-wrap gap-3">
                 {p.link && p.link !== "#" && (
-                  <a href={p.link} target="_blank" rel="noopener noreferrer" 
-                    className="text-sm text-cyan-400 hover:text-cyan-300 transition-colors">
-                    ↗ Live Demo
-                  </a>
+                  <a href={p.link} target="_blank" rel="noopener noreferrer"
+                    className="text-sm text-cyan-400 hover:text-cyan-300 transition-colors">↗ Live Demo</a>
                 )}
                 {p.downloadLink && (
-                  <a href={p.downloadLink} target="_blank" rel="noopener noreferrer" 
-                    className="text-sm bg-gradient-to-r from-cyan-500 to-purple-600 px-4 py-1.5 rounded-full text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all">
-                    ⬇ Download
-                  </a>
+                  <a href={p.downloadLink} target="_blank" rel="noopener noreferrer"
+                    className="text-sm bg-gradient-to-r from-cyan-500 to-purple-600 px-4 py-1.5 rounded-full text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all">⬇ Download</a>
                 )}
               </div>
             </div>
@@ -89,10 +109,11 @@ function Projects() {
   );
 }
 
+// ─── Main Page ───
 export default function Home() {
   return (
     <main>
-      {/* Your existing hero and about sections go here */}
+      <Hero />
       <Projects />
       <section id="contact" className="py-24 px-4">
         <div className="max-w-6xl mx-auto">
