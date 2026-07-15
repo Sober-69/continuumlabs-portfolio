@@ -6,6 +6,8 @@ export const initialProjects = [
     tech: ["React Native", "Expo", "Adhan API"],
     link: "#",
     gradient: "from-cyan-400 to-blue-600",
+    icon: "🕌", // Added icon
+    downloadLink: "https://example.com/download/salah-reminder" // Added download link
   },
   {
     id: 2,
@@ -14,5 +16,7 @@ export const initialProjects = [
     tech: ["Unity", "C#", "Mobile"],
     link: "#",
     gradient: "from-purple-500 to-pink-500",
+    icon: "🧩", // Added icon
+    downloadLink: "https://example.com/download/qi-block-blast" // Added download link
   },
 ];
