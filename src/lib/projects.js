@@ -1,21 +1,20 @@
-// For now, use local storage. Later upgrade to a database
 import { initialProjects } from '@/data/projects';
 
 const STORAGE_KEY = 'portfolio_projects';
 
 export const getProjects = () => {
-  if (typeof window === 'undefined') {
-    return initialProjects;
-  }
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored) {
-    try {
-      return JSON.parse(stored);
-    } catch {
-      return initialProjects;
+  if (typeof window === 'undefined') return initialProjects;
+  
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (parsed && parsed.length > 0) return parsed;
     }
+  } catch (error) {
+    console.error('Failed to parse projects:', error);
   }
-  // Initialize with initial projects
+  
   localStorage.setItem(STORAGE_KEY, JSON.stringify(initialProjects));
   return initialProjects;
 };
