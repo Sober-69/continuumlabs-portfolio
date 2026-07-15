@@ -1,67 +1,9 @@
-import { getProjects } from '@/lib/projects';
-
 "use client";
 
 import { useState, useEffect } from "react";
+import { getProjects } from '@/lib/projects';
 
-function Projects() {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const res = await fetch('/api/projects');
-        const data = await res.json();
-        setProjects(data);
-      } catch (error) {
-        console.error('Failed to fetch projects:', error);
-        const localProjects = getProjects();
-        setProjects(localProjects);
-      }
-      setLoading(false);
-    };
-    fetchProjects();
-  }, []);
-
-  if (loading) {
-    return (
-      <section id="projects" className="py-24 px-4">
-        <div className="max-w-6xl mx-auto text-center text-gray-400">Loading projects...</div>
-      </section>
-    );
-  }
-
-  return (
-    <section id="projects" className="py-24 px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold gradient-text mb-4">My Projects</h2>
-          <p className="text-gray-500 dark:text-gray-400 max-w-lg mx-auto">Each project is built with passion and precision.</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((p) => (
-            <div key={p.id} className="group relative glass rounded-xl p-6 glow-border transition-all duration-500 hover:-translate-y-2">
-              <div className={`h-1.5 w-16 rounded-full bg-gradient-to-r ${p.gradient} mb-5`} />
-              <h3 className="text-xl font-bold mb-3 dark:text-white text-gray-900 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-purple-500 transition-all">
-                {p.title}
-              </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-5 leading-relaxed">{p.description}</p>
-              <div className="flex flex-wrap gap-2 mb-6">
-                {p.tech?.map((t) => (
-                  <span key={t} className="px-2.5 py-1 text-xs rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">{t}</span>
-                ))}
-              </div>
-              {p.link && p.link !== "#" && (
-                <a href={p.link} target="_blank" rel="noopener noreferrer" className="text-sm text-cyan-400 hover:text-cyan-300 transition-colors">↗ Live App</a>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+// Header component
 function Header({ dark, toggleDark, menuOpen, setMenuOpen }) {
   const links = [
     { label: "Home", href: "#home" },
@@ -97,6 +39,7 @@ function Header({ dark, toggleDark, menuOpen, setMenuOpen }) {
   );
 }
 
+// Hero component
 function Hero() {
   return (
     <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden px-4"
@@ -125,7 +68,41 @@ function Hero() {
   );
 }
 
+// UPDATED Projects component
 function Projects() {
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch('/api/projects');
+        if (!res.ok) {
+          throw new Error('Failed to fetch');
+        }
+        const data = await res.json();
+        setProjects(data);
+      } catch (error) {
+        console.error('Failed to fetch projects:', error);
+        const localProjects = getProjects();
+        setProjects(localProjects);
+      }
+      setLoading(false);
+    };
+    
+    fetchProjects();
+  }, []);
+
+  if (loading) {
+    return (
+      <section id="projects" className="py-24 px-4">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="text-gray-400">Loading projects...</div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="projects" className="py-24 px-4">
       <div className="max-w-6xl mx-auto">
@@ -142,11 +119,11 @@ function Projects() {
               </h3>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-5 leading-relaxed">{p.description}</p>
               <div className="flex flex-wrap gap-2 mb-6">
-                {p.tech.map((t) => (
+                {p.tech?.map((t) => (
                   <span key={t} className="px-2.5 py-1 text-xs rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">{t}</span>
                 ))}
               </div>
-              {p.link !== "#" && (
+              {p.link && p.link !== "#" && (
                 <a href={p.link} target="_blank" rel="noopener noreferrer" className="text-sm text-cyan-400 hover:text-cyan-300 transition-colors">↗ Live App</a>
               )}
             </div>
@@ -157,6 +134,7 @@ function Projects() {
   );
 }
 
+// About component
 function About() {
   const skills = [
     { emoji: "🤖", label: "AI Applications", desc: "Intelligent apps powered by machine learning" },
@@ -185,6 +163,7 @@ function About() {
   );
 }
 
+// Contact component
 function Contact() {
   return (
     <section id="contact" className="py-24 px-4">
@@ -221,6 +200,7 @@ function Contact() {
   );
 }
 
+// Footer component
 function Footer() {
   return (
     <footer className="py-8 px-4 border-t border-white/10 glass">
@@ -231,6 +211,7 @@ function Footer() {
   );
 }
 
+// Main Home component
 export default function Home() {
   const [dark, setDark] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
