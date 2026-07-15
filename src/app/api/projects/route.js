@@ -1,3 +1,17 @@
+import { NextResponse } from "next/server";
+import { getProjects, saveProjects } from "@/lib/projects";
+
+// GET — fetch all projects (used by the portfolio page)
+export async function GET() {
+  try {
+    const projects = getProjects();
+    return NextResponse.json(projects);
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to fetch projects" }, { status: 500 });
+  }
+}
+
+// POST — add a new project (used by admin)
 export async function POST(request) {
   try {
     const newProject = await request.json();
