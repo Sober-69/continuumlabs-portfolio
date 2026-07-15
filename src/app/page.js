@@ -1,3 +1,5 @@
+import ContactForm from "@/components/ContactForm";
+
 function Projects() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
